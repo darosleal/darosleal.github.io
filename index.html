@@ -3,37 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproducir Video en WebOS</title>
-    <script>
-        function playVideo() {
-            const videoUrl = "http://tudominio.com/video.mp4"; // URL del video (ajústala)
-            const params = {
-                id: "com.webos.app.media", 
-                params: {
-                    target: videoUrl,
-                    loop: true
-                }
-            };
-
-            if (window.webOS) {
-                webOS.service.request("luna://com.webos.applicationManager", {
-                    method: "launch",
-                    parameters: params,
-                    onSuccess: function (res) {
-                        console.log("Video lanzado exitosamente:", res);
-                    },
-                    onFailure: function (err) {
-                        console.error("Error al lanzar el video:", err);
-                    }
-                });
-            } else {
-                alert("Tu dispositivo no soporta WebOS.");
-            }
+    <title>Video en Pantalla Completa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-    </script>
+        video {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
-    <h2>Enviar video a LG WebOS</h2>
-    <button onclick="playVideo()">Reproducir Video</button>
+    <video autoplay loop muted playsinline>
+        <source src="https://darosleal.github.io/sube.mp4" type="video/mp4">
+        Tu navegador no soporta el video en HTML5.
+    </video>
 </body>
 </html>
