@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video en Pantalla Completa</title>
+    <title>Video Entrada SUBE</title>
     <style>
         * {
             margin: 0;
@@ -19,9 +19,53 @@
     </style>
 </head>
 <body>
-    <video autoplay loop muted playsinline>
+    <video id="videoPlayer" autoplay loop muted playsinline preload="auto">
         <source src="https://darosleal.github.io/sube.mp4" type="video/mp4">
         Tu navegador no soporta el video en HTML5.
     </video>
+
+    <script>
+        const video = document.getElementById('videoPlayer');
+
+        // Función para mantener el video activo
+        function keepVideoAlive() {
+            if (video.paused) {
+                video.play().catch(error => {
+                    console.log("Error al reproducir el video:", error);
+                });
+            }
+        }
+
+        // Reproducir el video cada 10 segundos para evitar la suspensión
+        setInterval(keepVideoAlive, 10000);
+
+        // Forzar la reproducción al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            video.play().catch(error => {
+                console.log("Error al reproducir el video:", error);
+            });
+        });
+
+        // Manejar la visibilidad de la página (útil si el televisor entra en modo de suspensión)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                video.play().catch(error => {
+                    console.log("Error al reproducir el video:", error);
+                });
+            } else {
+                video.pause();
+            }
+        });
+
+        // Manejar errores de red o carga del video
+        video.addEventListener('error', (e) => {
+            console.error("Error en el video:", e);
+            // Intentar recargar el video después de 5 segundos
+            setTimeout(() => {
+                video.load();
+                video.play();
+            }, 5000);
+        });
+    </script>
 </body>
 </html>
